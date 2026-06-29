@@ -1,75 +1,122 @@
-# React + TypeScript + Vite
+# TaskFlow AI Landing Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A minimal, responsive landing page with lead capture built using React, TypeScript, Vite, and Tailwind CSS. The form submits leads to a serverless API route and includes client + server-side validation.
 
-Currently, two official plugins are available:
+Live demo: https://landing-page-black-phi-93.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Hero section with headline, supporting text, and CTA button
+- Features section with 3 benefit cards
+- Social proof section with stats and testimonials
+- Email capture form (`name` + `email`) with:
+  - required field validation
+  - loading state
+  - success state
+  - error state
+- Serverless API route at `api/capture.ts` for lead validation and handling
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React 19
+- TypeScript 6
+- Vite 8
+- Tailwind CSS 4 (via `@tailwindcss/postcss`)
+- Vercel Serverless Functions (`@vercel/node`)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Project Structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- `src/App.tsx` - page composition
+- `src/components/Hero/index.tsx` - hero section
+- `src/components/Features/index.tsx` - features cards
+- `src/components/SocialProof/index.tsx` - stats and testimonials
+- `src/components/EmailCapture/index.tsx` - lead form and submit states
+- `src/components/Footer/index.tsx` - footer
+- `api/capture.ts` - Vercel API route for lead capture
+- `vite.config.ts` - Vite config and local dev API middleware for `/api/capture`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
 
+- Node.js 18+
+- npm
+
+### Install dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Start development server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+### Build for production
+
+```bash
+npm run build
+```
+
+### Preview production build
+
+```bash
+npm run preview
+```
+
+## Scripts
+
+- `npm run dev` - start Vite dev server
+- `npm run build` - TypeScript build + Vite production build
+- `npm run lint` - run ESLint
+- `npm run preview` - preview production output
+
+## API Details
+
+### Endpoint
+
+- `POST /api/capture`
+
+### Request body
+
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane@company.com"
+}
+```
+
+### Success response
+
+```json
+{
+  "success": true,
+  "message": "Lead captured successfully."
+}
+```
+
+### Validation rules
+
+- `name` must be a non-empty string
+- `email` must match valid email format
+
+## Notes
+
+- In production (Vercel), `api/capture.ts` handles lead submissions.
+- For local Vite-only development, `vite.config.ts` includes a middleware fallback for `/api/capture`.
+- Optional Resend integration is scaffolded in `api/capture.ts` comments.
+
+## Deployment
+
+This app is deployed on Vercel:
+
+- https://landing-page-black-phi-93.vercel.app/
+
+For fresh deploys:
+
+1. Push repo to GitHub
+2. Import project in Vercel
+3. Build command: `npm run build`
+4. Output directory: `dist`
